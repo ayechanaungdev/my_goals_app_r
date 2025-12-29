@@ -3,17 +3,17 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const HomeScreen = () => {
+const CompletedScreen = () => {
   const router = useRouter();
   return (
     <View style={styles.container}>
       <Header title="My Goals" onAboutPress={() => router.push("/about")} />
-      <Text>HomeScreen</Text>
+      <Text>Completed Screen</Text>
     </View>
   );
 };
 
-export default HomeScreen;
+export default CompletedScreen;
 
 const styles = StyleSheet.create({
   container: {
