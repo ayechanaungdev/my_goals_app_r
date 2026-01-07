@@ -1,8 +1,15 @@
+import AddGoalItem from "@/components/AddGoalItem";
 import GoalItem from "@/components/GoalItem";
 import Header from "@/components/Header";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 type Goal = {
   id: string;
@@ -16,10 +23,35 @@ const HomeScreen = () => {
     { id: "2", text: "Learn Japanese" },
     { id: "3", text: "Practice Japanese Speaking" },
   ]);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModelHandler = () => {
+    setModalVisible(true);
+  };
+  const closeModalHandler = () => {
+    setModalVisible(false);
+  };
+
+  const addGoalHandler = (goalText: string) => {
+    setGoals((prevGoals) => [
+      ...prevGoals,
+      { id: Date.now().toString(), text: goalText },
+    ]);
+    closeModalHandler();
+  };
+
   return (
     <View style={styles.container}>
       <Header title="My Goals" onAboutPress={() => router.push("/about")} />
       <Text>HomeScreen</Text>
+      <TouchableOpacity onPress={() => openModelHandler()}>
+        <Text>+ Add Goal</Text>
+      </TouchableOpacity>
+      <AddGoalItem
+        visible={modalVisible}
+        onCancel={closeModalHandler}
+        onAddGoal={addGoalHandler}
+      />
       <View style={styles.goalsContainer}>
         <FlatList
           data={goals}
