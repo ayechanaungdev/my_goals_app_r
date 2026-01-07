@@ -1,7 +1,7 @@
 import GoalItem from "@/components/GoalItem";
 import Header from "@/components/Header";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 type Goal = {
@@ -11,11 +11,11 @@ type Goal = {
 
 const HomeScreen = () => {
   const router = useRouter();
-  const goals: Goal[] = [
+  const [goals, setGoals] = useState<Goal[]>([
     { id: "1", text: "Study React Native" },
     { id: "2", text: "Learn Japanese" },
     { id: "3", text: "Practice Japanese Speaking" },
-  ];
+  ]);
   return (
     <View style={styles.container}>
       <Header title="My Goals" onAboutPress={() => router.push("/about")} />
