@@ -18,11 +18,7 @@ type Goal = {
 
 const HomeScreen = () => {
   const router = useRouter();
-  const [goals, setGoals] = useState<Goal[]>([
-    { id: "1", text: "Study React Native" },
-    { id: "2", text: "Learn Japanese" },
-    { id: "3", text: "Practice Japanese Speaking" },
-  ]);
+  const [goals, setGoals] = useState<Goal[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const openModelHandler = () => {
@@ -43,10 +39,12 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Header title="My Goals" onAboutPress={() => router.push("/about")} />
-      <Text>HomeScreen</Text>
-      <TouchableOpacity onPress={() => openModelHandler()}>
-        <Text>+ Add Goal</Text>
-      </TouchableOpacity>
+      <View style={styles.addGoalContent}>
+        <Text style={styles.pageTitle}>Set Your Goals</Text>
+        <TouchableOpacity onPress={() => openModelHandler()}>
+          <Text style={styles.addGoalBtn}>+ Add Goal</Text>
+        </TouchableOpacity>
+      </View>
       <AddGoalItem
         visible={modalVisible}
         onCancel={closeModalHandler}
@@ -68,6 +66,24 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  addGoalContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 20,
+    marginVertical: 15,
+    alignItems: "center",
+  },
+  pageTitle: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  addGoalBtn: {
+    backgroundColor: "#5e08cc",
+    color: "#fff",
+    fontWeight: "500",
+    padding: 10,
+    borderRadius: 18,
   },
   goalsContainer: {
     paddingHorizontal: 16,
