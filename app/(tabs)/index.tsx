@@ -14,8 +14,11 @@ import {
 
 const HomeScreen = () => {
   const router = useRouter();
-  const { goals, addGoal } = useGoals();
+  const { goals, addGoal, setCompletedGoal } = useGoals();
   const [modalVisible, setModalVisible] = useState(false);
+
+  // filter incomplted goals
+  const incompltedGoals = goals.filter((g) => !g.isCompleted);
 
   const openModelHandler = () => {
     setModalVisible(true);
@@ -44,11 +47,20 @@ const HomeScreen = () => {
         onAddGoal={addGoalHandler}
       />
       <View style={styles.goalsContainer}>
-        <FlatList
-          data={goals}
-          renderItem={({ item }) => <GoalItem text={item.text} />}
-          keyExtractor={(item) => item.id}
-        />
+        {incompltedGoals && (
+          <FlatList
+            data={incompltedGoals}
+            renderItem={({ item }) => (
+              <GoalItem
+                id={item.id}
+                text={item.text}
+                isCompleted={item.isCompleted}
+                onComplete={setCompletedGoal}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        )}
       </View>
     </View>
   );

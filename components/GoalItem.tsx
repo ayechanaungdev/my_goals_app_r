@@ -1,13 +1,25 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type GoalItemProps = {
+  id: string;
   text: string;
+  isCompleted: boolean;
+  onComplete: (id: string) => void;
 };
 
-const GoalItem = ({ text }: GoalItemProps) => {
+const GoalItem = ({ id, text, isCompleted, onComplete }: GoalItemProps) => {
   return (
     <View style={styles.goalItem}>
-      <Text style={styles.goalText}>{text}</Text>
+      <View style={styles.goalItemContent}>
+        <Text style={styles.goalText}>{text}</Text>
+        {!isCompleted ? (
+          <Pressable onPress={() => onComplete(id)} style={styles.checkButton}>
+            <Text style={styles.checkText}>✓</Text>
+          </Pressable>
+        ) : (
+          <></>
+        )}
+      </View>
     </View>
   );
 };
@@ -25,10 +37,29 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3,
   },
+  goalItemContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   goalText: {
     fontSize: 16,
     color: "#333",
     paddingVertical: 4,
+  },
+  checkButton: {
+    width: 30,
+    height: 30,
+    borderWidth: 2,
+    borderColor: "#2ecc71",
+    borderRadius: 14,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  checkText: {
+    color: "#2ecc71",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
