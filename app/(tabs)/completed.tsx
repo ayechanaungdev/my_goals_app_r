@@ -1,16 +1,12 @@
 import GoalItem from "@/components/GoalItem";
 import Header from "@/components/Header";
+import { useGoals } from "@/contexts/GoalsContext";
 import { useRouter } from "expo-router";
 import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 const CompletedScreen = () => {
-  const goals = [
-    { id: "1", text: "Study React Native", isCompleted: false },
-    { id: "2", text: "Study Japanese", isCompleted: false },
-    { id: "3", text: "Clean room", isCompleted: false },
-  ];
-
+  const { goals } = useGoals();
   const completedGoals = goals.filter((goal) => goal.isCompleted);
 
   const router = useRouter();
@@ -23,7 +19,14 @@ const CompletedScreen = () => {
       <View style={styles.goalsContainer}>
         <FlatList
           data={completedGoals}
-          renderItem={({ item }) => <GoalItem text={item.text} />}
+          renderItem={({ item }) => (
+            <GoalItem
+              id={item.id}
+              text={item.text}
+              isCompleted={item.isCompleted}
+              onComplete={() => {}}
+            />
+          )}
           keyExtractor={(item) => item.id}
           ListEmptyComponent={
             <View style={styles.noCompletedGoals}>
