@@ -1,6 +1,7 @@
 import AddGoalItem from "@/components/AddGoalItem";
 import GoalItem from "@/components/GoalItem";
 import Header from "@/components/Header";
+import { useGoals } from "@/contexts/GoalsContext";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -11,14 +12,9 @@ import {
   View,
 } from "react-native";
 
-type Goal = {
-  id: string;
-  text: string;
-};
-
 const HomeScreen = () => {
   const router = useRouter();
-  const [goals, setGoals] = useState<Goal[]>([]);
+  const { goals, addGoal } = useGoals();
   const [modalVisible, setModalVisible] = useState(false);
 
   const openModelHandler = () => {
@@ -29,10 +25,7 @@ const HomeScreen = () => {
   };
 
   const addGoalHandler = (goalText: string) => {
-    setGoals((prevGoals) => [
-      ...prevGoals,
-      { id: Date.now().toString(), text: goalText },
-    ]);
+    addGoal(goalText);
     closeModalHandler();
   };
 
