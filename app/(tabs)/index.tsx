@@ -14,7 +14,7 @@ import {
 
 const HomeScreen = () => {
   const router = useRouter();
-  const { goals, addGoal, setCompletedGoal } = useGoals();
+  const { goals, addGoal, setCompletedGoal, deleteGoal } = useGoals();
   const [modalVisible, setModalVisible] = useState(false);
 
   // filter incomplted goals
@@ -56,6 +56,7 @@ const HomeScreen = () => {
                 text={item.text}
                 isCompleted={item.isCompleted}
                 onComplete={setCompletedGoal}
+                onDelete={deleteGoal}
               />
             )}
             keyExtractor={(item) => item.id}

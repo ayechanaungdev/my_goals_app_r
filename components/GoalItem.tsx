@@ -1,3 +1,4 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type GoalItemProps = {
@@ -5,19 +6,46 @@ type GoalItemProps = {
   text: string;
   isCompleted: boolean;
   onComplete: (id: string) => void;
+  onDelete: (id: string) => void;
 };
 
-const GoalItem = ({ id, text, isCompleted, onComplete }: GoalItemProps) => {
+const GoalItem = ({
+  id,
+  text,
+  isCompleted,
+  onComplete,
+  onDelete,
+}: GoalItemProps) => {
   return (
     <View style={styles.goalItem}>
       <View style={styles.goalItemContent}>
         <Text style={styles.goalText}>{text}</Text>
         {!isCompleted ? (
-          <Pressable onPress={() => onComplete(id)} style={styles.checkButton}>
-            <Text style={styles.checkText}>✓</Text>
-          </Pressable>
+          <View style={styles.buttonArea}>
+            <Pressable
+              onPress={() => onComplete(id)}
+              style={[styles.iconButton, styles.checkButton]}
+            >
+              <Text style={[styles.iconText, styles.checkText]}>✓</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => onDelete(id)}
+              style={[styles.iconButton, styles.deleteButton]}
+            >
+              <Text style={[styles.iconText, styles.deleteText]}>✕</Text>
+            </Pressable>
+          </View>
         ) : (
-          <></>
+          <View style={styles.buttonArea}>
+            <Pressable
+              onPress={() => onDelete(id)}
+              style={[styles.iconButton, styles.trashButton]}
+            >
+              <Text style={[styles.iconText, styles.deleteText]}>
+                <Ionicons name="trash-outline" size={18} color="#555" />
+              </Text>
+            </Pressable>
+          </View>
         )}
       </View>
     </View>
@@ -46,20 +74,32 @@ const styles = StyleSheet.create({
     color: "#333",
     paddingVertical: 4,
   },
-  checkButton: {
+  buttonArea: {
+    flexDirection: "row",
+    gap: "10",
+  },
+  iconButton: {
     width: 30,
     height: 30,
     borderWidth: 2,
-    borderColor: "#2ecc71",
+
     borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
   },
+  checkButton: { borderColor: "#2ecc71" },
+  deleteButton: { borderColor: "#cc402e" },
+  trashButton: { borderColor: "#555", borderStyle: "dotted" },
 
-  checkText: {
-    color: "#2ecc71",
+  iconText: {
     fontSize: 16,
     fontWeight: "bold",
+  },
+  checkText: {
+    color: "#2ecc71",
+  },
+  deleteText: {
+    color: "#cc402e",
   },
 });
 

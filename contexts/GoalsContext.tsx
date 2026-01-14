@@ -10,6 +10,7 @@ type GoalsContextType = {
   goals: Goal[];
   addGoal: (text: string) => void;
   setCompletedGoal: (id: string) => void;
+  deleteGoal: (id: string) => void;
 };
 
 const GoalsContext = createContext<GoalsContextType | undefined>(undefined);
@@ -31,9 +32,14 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
       )
     );
   };
+  const deleteGoal = (id: string) => {
+    setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== id));
+  };
 
   return (
-    <GoalsContext.Provider value={{ goals, addGoal, setCompletedGoal }}>
+    <GoalsContext.Provider
+      value={{ goals, addGoal, setCompletedGoal, deleteGoal }}
+    >
       {children}
     </GoalsContext.Provider>
   );
