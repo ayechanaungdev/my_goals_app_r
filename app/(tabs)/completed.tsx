@@ -1,13 +1,33 @@
+import ConfirmModal from "@/components/ConfirmModal";
 import GoalItem from "@/components/GoalItem";
 import Header from "@/components/Header";
 import { useGoals } from "@/contexts/GoalsContext";
 import { useRouter } from "expo-router";
-import React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const CompletedScreen = () => {
-  const { goals, deleteGoal } = useGoals();
+  const { goals, deleteGoal, clearAllGoals } = useGoals();
   const completedGoals = goals.filter((goal) => goal.isCompleted);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModalHandler = () => {
+    setModalVisible(true);
+  };
+  const closeModalHandler = () => {
+    setModalVisible(false);
+  };
+
+  const confirmHandler = () => {
+    clearAllGoals();
+    closeModalHandler();
+  };
 
   const router = useRouter();
   return (
@@ -15,7 +35,15 @@ const CompletedScreen = () => {
       <Header title="My Goals" onAboutPress={() => router.push("/about")} />
       <View style={styles.titleContent}>
         <Text style={styles.pageTitle}>Completed Goals</Text>
+        <TouchableOpacity onPress={() => openModalHandler()}>
+          <Text style={styles.clearAllBtn}>Clear All</Text>
+        </TouchableOpacity>
       </View>
+      <ConfirmModal
+        visible={modalVisible}
+        onConfirm={confirmHandler}
+        onCancel={closeModalHandler}
+      />
       <View style={styles.goalsContainer}>
         <FlatList
           data={completedGoals}
@@ -60,6 +88,13 @@ const styles = StyleSheet.create({
   pageTitle: {
     fontWeight: "bold",
     fontSize: 20,
+  },
+  clearAllBtn: {
+    color: "#555",
+    fontStyle: "italic",
+    fontWeight: "500",
+    padding: 10,
+    textDecorationLine: "underline",
   },
   noCompletedGoals: {
     justifyContent: "center",

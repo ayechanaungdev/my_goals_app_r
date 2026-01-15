@@ -12,6 +12,7 @@ type GoalsContextType = {
   addGoal: (text: string) => void;
   setCompletedGoal: (id: string) => void;
   deleteGoal: (id: string) => void;
+  clearAllGoals: () => void;
 };
 
 const GoalsContext = createContext<GoalsContextType | undefined>(undefined);
@@ -71,6 +72,10 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
     setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== id));
   };
 
+  const clearAllGoals = () => {
+    setGoals((prevGoals) => prevGoals.filter((goal) => !goal.isCompleted));
+  };
+
   // loading
   if (isLoading) {
     return null;
@@ -78,7 +83,7 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <GoalsContext.Provider
-      value={{ goals, addGoal, setCompletedGoal, deleteGoal }}
+      value={{ goals, addGoal, setCompletedGoal, deleteGoal, clearAllGoals }}
     >
       {children}
     </GoalsContext.Provider>
