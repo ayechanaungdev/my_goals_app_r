@@ -19,6 +19,7 @@ const GoalsContext = createContext<GoalsContextType | undefined>(undefined);
 export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
   const [goals, setGoals] = useState<Goal[]>([]);
   const STORAGE_KEY = "goalsdata123";
+  const [isLoading, setIsLoading] = useState(true);
 
   // load stored goals from loacal storage
   useEffect(() => {
@@ -30,6 +31,8 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
         }
       } catch (error) {
         console.error("Failed to load goals", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -38,15 +41,17 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
 
   // save goals to storage whenever they change
   useEffect(() => {
-    const saveGoals = async () => {
-      try {
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
-      } catch (error) {
-        console.error("Failed to save goals", error);
-      }
-    };
-    saveGoals();
-  }, [goals]);
+    if (!isLoading) {
+      const saveGoals = async () => {
+        try {
+          await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
+        } catch (error) {
+          console.error("Failed to save goals", error);
+        }
+      };
+      saveGoals();
+    }
+  }, [goals, isLoading]);
 
   const addGoal = (text: string) => {
     setGoals((prev) => [
@@ -65,6 +70,11 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
   const deleteGoal = (id: string) => {
     setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== id));
   };
+
+  // loading
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <GoalsContext.Provider
