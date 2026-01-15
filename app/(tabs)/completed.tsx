@@ -6,7 +6,7 @@ import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 const CompletedScreen = () => {
-  const { goals } = useGoals();
+  const { goals, deleteGoal } = useGoals();
   const completedGoals = goals.filter((goal) => goal.isCompleted);
 
   const router = useRouter();
@@ -25,6 +25,7 @@ const CompletedScreen = () => {
               text={item.text}
               isCompleted={item.isCompleted}
               onComplete={() => {}}
+              onDelete={deleteGoal}
             />
           )}
           keyExtractor={(item) => item.id}
