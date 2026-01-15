@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type Goal = {
   id: string;
@@ -17,6 +18,35 @@ const GoalsContext = createContext<GoalsContextType | undefined>(undefined);
 
 export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
   const [goals, setGoals] = useState<Goal[]>([]);
+  const STORAGE_KEY = "goalsdata123";
+
+  // load stored goals from loacal storage
+  useEffect(() => {
+    const loadGoals = async () => {
+      try {
+        const storedGoals = await AsyncStorage.getItem(STORAGE_KEY);
+        if (storedGoals) {
+          setGoals(JSON.parse(storedGoals));
+        }
+      } catch (error) {
+        console.error("Failed to load goals", error);
+      }
+    };
+
+    loadGoals();
+  }, []);
+
+  // save goals to storage whenever they change
+  useEffect(() => {
+    const saveGoals = async () => {
+      try {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
+      } catch (error) {
+        console.error("Failed to save goals", error);
+      }
+    };
+    saveGoals();
+  }, [goals]);
 
   const addGoal = (text: string) => {
     setGoals((prev) => [
