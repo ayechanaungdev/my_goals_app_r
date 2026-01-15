@@ -35,9 +35,11 @@ const CompletedScreen = () => {
       <Header title="My Goals" onAboutPress={() => router.push("/about")} />
       <View style={styles.titleContent}>
         <Text style={styles.pageTitle}>Completed Goals</Text>
-        <TouchableOpacity onPress={() => openModalHandler()}>
-          <Text style={styles.clearAllBtn}>Clear All</Text>
-        </TouchableOpacity>
+        {completedGoals.length > 1 && (
+          <TouchableOpacity onPress={() => openModalHandler()}>
+            <Text style={styles.clearAllBtn}>Clear All</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <ConfirmModal
         visible={modalVisible}
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 15,
     alignItems: "center",
+    height: 40,
   },
   pageTitle: {
     fontWeight: "bold",

@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 15,
     alignItems: "center",
+    height: 40,
   },
   pageTitle: {
     fontWeight: "bold",
