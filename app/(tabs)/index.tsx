@@ -60,6 +60,11 @@ const HomeScreen = () => {
               />
             )}
             keyExtractor={(item) => item.id}
+            ListEmptyComponent={
+              <View style={styles.setGoals}>
+                <Text style={styles.emptyGoalsText}>No goals yet!</Text>
+              </View>
+            }
           />
         )}
       </View>
@@ -94,4 +99,10 @@ const styles = StyleSheet.create({
   goalsContainer: {
     paddingHorizontal: 16,
   },
+  setGoals: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "50%",
+  },
+  emptyGoalsText: { color: "#444444", fontSize: 16, fontStyle: "italic" },
 });
