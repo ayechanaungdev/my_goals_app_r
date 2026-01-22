@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -19,11 +19,24 @@ type Props = {
 
 const GoalInput = ({ visible, onAddGoal, onCancel }: Props) => {
   const [text, setText] = useState("");
+  const [isInvalid, setIsInvalid] = useState(false);
+  const inputRef = useRef<TextInput>(null);
 
   const onAddGoalHandler = () => {
-    if (!text.trim()) return;
+    if (!text.trim()) {
+      setIsInvalid(true);
+      inputRef.current?.focus();
+      return;
+    }
+
     onAddGoal(text);
     setText("");
+    setIsInvalid(false);
+  };
+
+  const onCancelHandler = () => {
+    onCancel();
+    setIsInvalid(false);
   };
 
   return (
@@ -49,9 +62,10 @@ const GoalInput = ({ visible, onAddGoal, onCancel }: Props) => {
             </View>
             <TextInput
               placeholder="Enter your goal"
-              style={styles.input}
               value={text}
+              ref={inputRef}
               onChangeText={setText}
+              style={[styles.input, isInvalid && styles.invalidInput]}
             />
             <View style={styles.buttonContent}>
               <TouchableOpacity
@@ -61,7 +75,7 @@ const GoalInput = ({ visible, onAddGoal, onCancel }: Props) => {
                 <Text style={styles.addBtnText}>Add</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={onCancel}
+                onPress={onCancelHandler}
                 style={[styles.button, styles.cancelBtn]}
               >
                 <Text>Cancel</Text>
@@ -113,6 +127,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 22,
     borderRadius: 10,
+  },
+  invalidInput: {
+    borderColor: "#ff6b6b",
+    borderWidth: 2,
+    backgroundColor: "#ffecec",
   },
   buttonContent: {
     flexDirection: "row",
