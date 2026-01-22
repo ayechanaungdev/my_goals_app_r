@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useContext, useEffect, useState } from "react";
+import Toast from "react-native-toast-message";
 
 type Goal = {
   id: string;
@@ -59,21 +60,28 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
       ...prev,
       { id: Date.now().toString(), text, isCompleted: false },
     ]);
+    Toast.show({ type: "success", text1: "Goal added" });
   };
 
   const setCompletedGoal = (id: string) => {
     setGoals((prev) =>
       prev.map((goal) =>
-        goal.id === id ? { ...goal, isCompleted: !goal.isCompleted } : goal
-      )
+        goal.id === id ? { ...goal, isCompleted: !goal.isCompleted } : goal,
+      ),
     );
+    Toast.show({ type: "success", text1: "Goal is set 'completed'" });
   };
   const deleteGoal = (id: string) => {
     setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== id));
+    Toast.show({ type: "success", text1: "Goal deleted" });
   };
 
   const clearAllGoals = () => {
     setGoals((prevGoals) => prevGoals.filter((goal) => !goal.isCompleted));
+    Toast.show({
+      type: "success",
+      text1: "All completed goals cleared",
+    });
   };
 
   // loading
